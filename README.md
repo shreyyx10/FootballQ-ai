@@ -207,6 +207,19 @@ python -m pipeline.run_pipeline
 python -m pipeline.health_check
 ```
 
+**LLM narratives via local Ollama (optional, free):**
+
+```bash
+brew install ollama && ollama serve   # or the Ollama.app
+ollama pull llama3.2                  # ~2 GB; llama3.1:8b if you have 16GB+ RAM
+
+export ENABLE_REAL_LLM=true
+export LLM_BASE_URL=http://localhost:11434/v1
+export LLM_MODEL=llama3.2
+# /api/scout answers are now written by the local model, grounded in the
+# structured stats; if Ollama is down, template narratives take over.
+```
+
 **Frontend:**
 
 ```bash
@@ -237,7 +250,10 @@ Safe/free defaults throughout; see [.env.example](.env.example) for the full lis
 | `FBREF_FETCH_MODE` | `wayback` | `wayback` (Archive snapshots) or `direct` (blocked by FBref as of 2026) |
 | `FBREF_WAYBACK_MAX_SNAPSHOT_AGE_DAYS` | `2` | Snapshot freshness threshold before requesting a new capture |
 | `FBREF_REQUEST_DELAY_SECONDS` | `6` | Minimum delay between HTTP requests |
-| `USE_MOCK_LLM` / `ENABLE_REAL_LLM` | `true` / `false` | Deterministic narratives vs. real LLM (`OPENAI_API_KEY`) |
+| `ENABLE_REAL_LLM` | `false` | LLM-written narratives (template fallback stays if the LLM is unreachable) |
+| `LLM_BASE_URL` | — | OpenAI-compatible endpoint; `http://localhost:11434/v1` for local Ollama |
+| `LLM_MODEL` | `gpt-4o-mini` | Model name, e.g. `llama3.2` for Ollama |
+| `OPENAI_API_KEY` | — | Only needed for hosted providers (Ollama ignores it) |
 | `ENABLE_QDRANT` | `false` | Optional semantic-search layer |
 | `RATE_LIMIT_ENABLED` | `true` | API rate limiting |
 
@@ -270,7 +286,7 @@ Safe/free defaults throughout; see [.env.example](.env.example) for the full lis
 
 $0/month by design: Neon free tier (Postgres), GitHub Actions free tier
 (pipeline cron + CI), Vercel Hobby (frontend), Internet Archive (data
-access), mock-LLM mode (no API fees). Guardrails documented in
+access), local Ollama LLM (no API fees). Guardrails documented in
 [docs/COST_SAFETY.md](docs/COST_SAFETY.md).
 
 ## Known limitations
@@ -278,8 +294,9 @@ access), mock-LLM mode (no API fees). Guardrails documented in
 - Pipeline data freshness is bounded by Wayback snapshot age (typically ≤ 2
   days behind FBref) — irrelevant for season-cumulative stats, unsuitable for
   live-match use cases.
-- Mock-LLM mode produces template-based narratives; tone changes with a real
-  LLM enabled, the underlying statistics do not.
+- LLM narratives are grounded in the structured statistics via prompting, but
+  small local models can still drift on framing (e.g. inventing units) — the
+  deterministic template mode remains the accuracy baseline.
 - Similarity and tactical-fit scores are explainable heuristics, not
   machine-learning predictions.
 - Rate limiting is in-memory and per-instance — a best-effort guard, not an
