@@ -216,13 +216,18 @@ def enhance_with_llm(system_prompt: str, user_prompt: str, fallback_text: str) -
     by the template generators above) is returned unchanged.
     """
     settings = get_settings()
-    if not settings.enable_real_llm or not settings.openai_api_key:
+    if not settings.enable_real_llm or not (settings.openai_api_key or settings.llm_base_url):
         return fallback_text
 
     try:
         from openai import OpenAI  # type: ignore
 
-        client = OpenAI(api_key=settings.openai_api_key)
+        client = OpenAI(
+            # Ollama's OpenAI-compatible endpoint ignores the key but the
+            # client requires a non-empty string.
+            api_key=settings.openai_api_key or "ollama",
+            base_url=settings.llm_base_url or None,
+        )
         response = client.chat.completions.create(
             model=settings.llm_model,
             messages=[
@@ -230,7 +235,8 @@ def enhance_with_llm(system_prompt: str, user_prompt: str, fallback_text: str) -
                 {"role": "user", "content": user_prompt},
             ],
             max_tokens=300,
-            timeout=8,
+            # Local models (Ollama) need more headroom than a hosted API.
+            timeout=30 if settings.llm_base_url else 8,
         )
         content = response.choices[0].message.content
         return content.strip() if content else fallback_text

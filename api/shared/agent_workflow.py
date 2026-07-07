@@ -1,29 +1,29 @@
 """
-LangGraph-inspired multi-agent workflow for /api/scout.
+LangGraph multi-agent workflow for /api/scout.
 
-This module implements a graph-style workflow using modular Python
-functions ("nodes"). Each node has a single responsibility and the
-orchestrator (`run_scout_workflow`) wires them together in sequence,
-mirroring how a LangGraph `StateGraph` would be structured.
+The workflow is a real LangGraph `StateGraph`: each agent is a node that
+receives the shared `ScoutState` and returns a partial state update, and a
+conditional edge routes the query to the right specialist agent based on
+the Query Classifier's output.
 
-Why not LangGraph directly?
-    LangGraph's runtime dependencies and graph-execution model add
-    meaningful cold-start weight to an Azure Functions Consumption-plan
-    deployment, which is billed/limited by execution time and memory. To
-    keep the public deployment fast, free, and dependency-light, the same
-    node/edge structure is implemented with plain functions. See
-    docs/AGENT_WORKFLOW.md for the LangGraph upgrade path - swapping these
-    functions into `StateGraph` nodes is a drop-in change if/when desired.
+Graph shape:
 
-Nodes (agents):
-    1. classify_query        - Query Classifier
-    2. stats_agent            - Stats Agent
-    3. retrieve_context        - SQL RAG Retriever (rag_retriever.py)
-    4. similarity_agent        - Similarity Agent (similarity.py)
-    5. comparison_agent        - Comparison Agent (comparison.py)
-    6. tactical_fit_agent       - Tactical Fit Agent (tactical_fit.py)
-    7. recommendation_agent    - Recommendation Agent
-    8. safety_agent            - Safety Agent (security.py heuristics)
+    safety ──► classify ──► (router by query_type)
+                              ├─► player_search ────┐
+                              ├─► player_comparison ─┤
+                              ├─► player_similarity ─┼─► finalize ──► END
+                              ├─► tactical_fit ──────┤
+                              ├─► scouting_report ───┤
+                              └─► general_question ──┘
+
+If the `langgraph` package is unavailable, the same node functions run in
+the same order via a small sequential fallback, so the API degrades
+gracefully rather than 500ing.
+
+The finalize node optionally rewrites the template narrative with a real
+LLM (`enhance_with_llm`, e.g. a local Ollama model) when
+ENABLE_REAL_LLM=true - grounded in the structured answer, never replacing
+the underlying statistics.
 
 No hidden chain-of-thought is ever included in the response - only the
 concise `workflow_summary` list of human-readable strings.
@@ -31,12 +31,15 @@ concise `workflow_summary` list of human-readable strings.
 
 from __future__ import annotations
 
+import logging
+import operator
 import re
-from typing import Any, Optional
+from typing import Annotated, Any, Optional, TypedDict
 
 from .comparison import build_comparison
 from .database import PlayerFilters, get_data_store
 from .mock_llm import (
+    enhance_with_llm,
     generate_comparison_narrative,
     generate_general_answer,
     generate_player_search_answer,
@@ -44,11 +47,14 @@ from .mock_llm import (
     generate_similarity_explanation,
     generate_tactical_fit_summary,
 )
+from .config import get_settings
 from .rag_retriever import extract_keywords, retrieve_context
-from .response_formatter import assemble_scout_response, build_supporting_statistics, clean_players
+from .response_formatter import assemble_scout_response, build_supporting_statistics
 from .security import detect_prompt_injection
 from .similarity import compute_similarity, similarity_result_to_dict
 from .tactical_fit import compute_tactical_fit
+
+logger = logging.getLogger("footballq.agent_workflow")
 
 QueryType = str  # one of the QUERY_TYPES below
 
@@ -63,7 +69,34 @@ QUERY_TYPES = {
 
 
 # -----------------------------------------------------------------------------
-# Node 1: Query Classifier
+# Shared graph state
+# -----------------------------------------------------------------------------
+
+class ScoutState(TypedDict, total=False):
+    """State threaded through the LangGraph nodes.
+
+    `workflow_summary` and `limitations` use an additive reducer so every
+    node can append its own lines without clobbering earlier ones.
+    """
+
+    query: str
+    all_players: list
+    team_profiles: list
+    query_type: str
+    keywords: dict
+    matched_player_ids: list
+    recommended_players: list
+    answer: str
+    retrieved_context_summary: list
+    tactical_notes_text: str
+    confidence_level: str
+    workflow_summary: Annotated[list, operator.add]
+    limitations: Annotated[list, operator.add]
+    response: dict
+
+
+# -----------------------------------------------------------------------------
+# Query Classifier
 # -----------------------------------------------------------------------------
 
 def classify_query(query: str, players: list[dict[str, Any]], team_profiles: list[dict[str, Any]]) -> tuple[QueryType, dict[str, list[str]]]:
@@ -98,7 +131,7 @@ def classify_query(query: str, players: list[dict[str, Any]], team_profiles: lis
 
 
 # -----------------------------------------------------------------------------
-# Node 2: Stats Agent
+# Stats Agent helpers
 # -----------------------------------------------------------------------------
 
 _AGE_UNDER_RE = re.compile(r"under\s+(\d{1,2})")
@@ -193,10 +226,6 @@ def stats_agent(query: str, keywords: dict[str, list[str]], limit: int = 5) -> t
     return players_sorted[:limit], constraints
 
 
-# -----------------------------------------------------------------------------
-# Node 4: Similarity Agent
-# -----------------------------------------------------------------------------
-
 def similarity_agent(reference_player_id: str, query: str, keywords: dict[str, list[str]], top_n: int = 5):
     store = get_data_store()
     reference_player = store.get_player(reference_player_id)
@@ -217,10 +246,6 @@ def similarity_agent(reference_player_id: str, query: str, keywords: dict[str, l
     return reference_player, results, constraints
 
 
-# -----------------------------------------------------------------------------
-# Node 7: Recommendation Agent + Node 8: Safety Agent + Orchestrator
-# -----------------------------------------------------------------------------
-
 def _confidence_level(data_points: int, has_context: bool) -> str:
     if data_points == 0:
         return "Low"
@@ -231,6 +256,334 @@ def _confidence_level(data_points: int, has_context: bool) -> str:
     return "Low"
 
 
+# -----------------------------------------------------------------------------
+# Graph nodes. Each takes the merged ScoutState and returns a partial update.
+# -----------------------------------------------------------------------------
+
+def safety_node(state: ScoutState) -> dict:
+    """Node 1: screen the input for prompt-injection / unsafe patterns."""
+    update: dict = {
+        "workflow_summary": ["Safety agent screened the input for unsafe or out-of-scope requests."],
+        "limitations": [],
+    }
+    if detect_prompt_injection(state["query"]):
+        update["limitations"] = [
+            "The query contained patterns associated with prompt injection or unsafe "
+            "requests (e.g. attempts to reveal hidden instructions or secrets). "
+            "These were ignored and only the football scouting request was processed."
+        ]
+    return update
+
+
+def classify_node(state: ScoutState) -> dict:
+    """Node 2: classify the query and extract entities."""
+    query_type, keywords = classify_query(state["query"], state["all_players"], state["team_profiles"])
+    matched_player_ids = [
+        p["player_id"] for p in state["all_players"] if p.get("player_name") in keywords["player_names"]
+    ]
+    return {
+        "query_type": query_type,
+        "keywords": keywords,
+        "matched_player_ids": matched_player_ids,
+        "workflow_summary": [
+            f"Query classifier identified this as a '{query_type.replace('_', ' ')}' request."
+        ],
+    }
+
+
+def route_query(state: ScoutState) -> str:
+    """Conditional edge: send the state to the matching specialist node."""
+    return state["query_type"]
+
+
+def player_search_node(state: ScoutState) -> dict:
+    query, keywords = state["query"], state["keywords"]
+    recommended_players, _constraints = stats_agent(query, keywords)
+    rag = retrieve_context(query, state["matched_player_ids"])
+    answer = generate_player_search_answer(query, recommended_players)
+    if rag["scouting_notes"]:
+        extra = " ".join(
+            f"{n.get('player_name')}: {n.get('profile_summary')}" for n in rag["scouting_notes"][:2]
+        )
+        answer += f" Additional scouting context: {extra}"
+    return {
+        "recommended_players": recommended_players,
+        "retrieved_context_summary": rag["retrieved_context_summary"],
+        "answer": answer,
+        "workflow_summary": [
+            f"Stats agent filtered and ranked {len(recommended_players)} player(s) "
+            f"from the dataset based on the requested criteria.",
+            "SQL RAG retriever pulled supporting scouting notes where available.",
+        ],
+    }
+
+
+def player_comparison_node(state: ScoutState) -> dict:
+    store = get_data_store()
+    matched = state["matched_player_ids"]
+    compare_ids = matched[:5] if len(matched) >= 2 else [p["player_id"] for p in state["all_players"][:2]]
+    players = [store.get_player(pid) for pid in compare_ids]
+    players = [p for p in players if p]
+    comparison = build_comparison(players)
+    rag = retrieve_context(state["query"], compare_ids)
+    update: dict = {
+        "recommended_players": players,
+        "retrieved_context_summary": rag["retrieved_context_summary"],
+        "answer": generate_comparison_narrative(comparison),
+        "workflow_summary": [
+            f"Comparison agent built a side-by-side comparison across {len(comparison['comparison_table'])} metrics.",
+            "SQL RAG retriever pulled scouting notes for the compared players.",
+        ],
+    }
+    if rag["scouting_notes"]:
+        update["tactical_notes_text"] = " ".join(
+            f"{n.get('player_name')} - tactical notes: {n.get('tactical_notes')}" for n in rag["scouting_notes"][:2]
+        )
+    return update
+
+
+def player_similarity_node(state: ScoutState) -> dict:
+    matched = state["matched_player_ids"]
+    all_players = state["all_players"]
+    reference_id = matched[0] if matched else (all_players[0]["player_id"] if all_players else None)
+    reference_player, results, _constraints = (
+        similarity_agent(reference_id, state["query"], state["keywords"]) if reference_id else (None, [], {})
+    )
+    if not reference_player:
+        return {
+            "answer": "No reference player could be identified from the query. Try naming a specific player.",
+            "limitations": ["Reference player not found in the dataset."],
+        }
+
+    recommended_players = [r.player for r in results]
+    rag = retrieve_context(
+        state["query"],
+        [reference_player["player_id"]] + [p["player_id"] for p in recommended_players[:2]],
+    )
+    results_dicts = [similarity_result_to_dict(r) for r in results]
+    return {
+        "recommended_players": recommended_players,
+        "retrieved_context_summary": rag["retrieved_context_summary"],
+        "answer": generate_similarity_explanation(reference_player, results_dicts),
+        "workflow_summary": [
+            f"Similarity agent ranked {len(results)} candidate(s) against {reference_player.get('player_name')}.",
+            "SQL RAG retriever pulled scouting context for the reference and top matches.",
+        ],
+    }
+
+
+def tactical_fit_node(state: ScoutState) -> dict:
+    store = get_data_store()
+    keywords, all_players = state["keywords"], state["all_players"]
+    team_name = keywords["team_names"][0] if keywords["team_names"] else None
+    team = store.get_team_profile(team_name) if team_name else None
+    if not team:
+        return {
+            "answer": "No matching team profile was found. Try one of: "
+            + ", ".join(t["team_name"] for t in state["team_profiles"]),
+            "limitations": ["Team not found in the dataset."],
+        }
+
+    matched = state["matched_player_ids"]
+    if matched:
+        candidates = [store.get_player(pid) for pid in matched]
+    else:
+        position = keywords["positions"][0] if keywords["positions"] else None
+        position_group = keywords.get("position_groups", [None])[0] if keywords.get("position_groups") else None
+        if position:
+            candidates = store.get_players(PlayerFilters(position=position))
+        elif position_group:
+            candidates = [p for p in all_players if position_group.lower() in (p.get("position") or "").lower()]
+        else:
+            candidates = all_players
+    candidates = [c for c in candidates if c]
+
+    scored = []
+    for player in candidates:
+        fit = compute_tactical_fit(player, team, all_players)
+        scored.append((fit["fit_score"], player, fit))
+    scored.sort(key=lambda x: x[0], reverse=True)
+    top = scored[:5]
+
+    update: dict = {
+        "recommended_players": [p for _, p, _ in top],
+        "workflow_summary": [
+            f"Tactical fit agent evaluated candidates against {team['team_name']}'s tactical profile.",
+            "SQL RAG retriever pulled the team's tactical profile and any related player notes.",
+        ],
+    }
+
+    if top:
+        _best_score, best_player, best_fit = top[0]
+        answer = generate_tactical_fit_summary(best_player, team, best_fit)
+        if len(top) > 1:
+            others = ", ".join(f"{p.get('player_name')} ({s}/100)" for s, p, _ in top[1:4])
+            answer += f" Other candidates assessed: {others}."
+        update["answer"] = answer
+        update["tactical_notes_text"] = team.get("tactical_style", "")
+    else:
+        update["answer"] = f"No candidates were available to evaluate against {team['team_name']}."
+
+    rag = retrieve_context(state["query"], matched)
+    update["retrieved_context_summary"] = rag["retrieved_context_summary"] or [
+        f"Team profile retrieved for {team['team_name']} ({team['formation']}, {team['possession_style']})."
+    ]
+    return update
+
+
+def scouting_report_node(state: ScoutState) -> dict:
+    store = get_data_store()
+    matched = state["matched_player_ids"]
+    target_id = matched[0] if matched else None
+    player = store.get_player(target_id) if target_id else None
+    if not player:
+        return {
+            "answer": "No matching player was found to generate a scouting report. Try naming a specific player.",
+            "limitations": ["Player not found in the dataset."],
+        }
+
+    rag = retrieve_context(state["query"], [player["player_id"]])
+    scouting_note = rag["scouting_notes"][0] if rag["scouting_notes"] else None
+    report = generate_scouting_report(player, scouting_note)
+    update: dict = {
+        "recommended_players": [player],
+        "retrieved_context_summary": rag["retrieved_context_summary"],
+        "answer": report["answer"],
+        "tactical_notes_text": report["tactical_notes"],
+        "workflow_summary": [
+            "SQL RAG retriever pulled the scouting note and stats for the requested player.",
+            "Recommendation agent compiled a structured scouting report.",
+        ],
+    }
+    if not scouting_note:
+        update["limitations"] = ["No detailed scouting note found - response based on statistics only."]
+    return update
+
+
+def general_question_node(state: ScoutState) -> dict:
+    return {
+        "answer": generate_general_answer(state["query"]),
+        "retrieved_context_summary": ["No specific player or team context matched this general query."],
+    }
+
+
+def finalize_node(state: ScoutState) -> dict:
+    """Recommendation agent: assemble narrative, confidence, and optionally
+    rewrite the template answer with a real LLM (grounded, never inventing
+    statistics)."""
+    settings = get_settings()
+    answer = state.get("answer", "")
+    tactical_notes_text = state.get("tactical_notes_text", "")
+    recommended_players = state.get("recommended_players", [])
+    retrieved_context_summary = state.get("retrieved_context_summary", [])
+
+    if tactical_notes_text:
+        answer = f"{answer} Tactical notes: {tactical_notes_text}"
+
+    update: dict = {"limitations": [], "workflow_summary": []}
+    if not recommended_players:
+        update["limitations"].append("No specific players could be confidently recommended for this query.")
+
+    confidence_level = _confidence_level(
+        len(recommended_players),
+        bool(retrieved_context_summary)
+        and retrieved_context_summary != ["No specific player or team context matched this general query."],
+    )
+
+    if settings.enable_real_llm:
+        stats_lines = "; ".join(
+            f"{p.get('player_name')} ({p.get('club')}): {p.get('goals')} goals, "
+            f"{p.get('assists')} assists, xG {p.get('xg')}, {p.get('minutes')} min"
+            for p in recommended_players[:5]
+        )
+        enhanced = enhance_with_llm(
+            system_prompt=(
+                "You are a professional football scout writing for a scouting platform. "
+                "Rewrite the draft answer to be natural and engaging, in 2-4 sentences. "
+                "Use ONLY the facts and statistics provided - never invent numbers, "
+                "players, or claims. Keep every statistic exactly as given."
+            ),
+            user_prompt=(
+                f"Question: {state['query']}\n\nDraft answer: {answer}\n\n"
+                f"Player statistics: {stats_lines or 'none'}"
+            ),
+            fallback_text=answer,
+        )
+        if enhanced != answer:
+            answer = enhanced
+            update["workflow_summary"].append(
+                f"LLM narrative agent ({settings.llm_model}) rewrote the final answer from the structured draft."
+            )
+
+    update["limitations"].append(
+        "All data is sample/demo data for a free-tier portfolio project and should not be used for real "
+        "transfer or scouting decisions."
+    )
+    update["workflow_summary"].append(
+        f"Recommendation agent finalised the response with confidence level: {confidence_level}."
+    )
+
+    return {**update, "answer": answer, "confidence_level": confidence_level}
+
+
+# -----------------------------------------------------------------------------
+# Graph construction
+# -----------------------------------------------------------------------------
+
+_BRANCH_NODES = {
+    "player_search": player_search_node,
+    "player_comparison": player_comparison_node,
+    "player_similarity": player_similarity_node,
+    "tactical_fit": tactical_fit_node,
+    "scouting_report": scouting_report_node,
+    "general_question": general_question_node,
+}
+
+_compiled_graph = None
+
+
+def _build_graph():
+    """Build and compile the LangGraph StateGraph (cached per process)."""
+    global _compiled_graph
+    if _compiled_graph is not None:
+        return _compiled_graph
+
+    from langgraph.graph import END, StateGraph
+
+    graph = StateGraph(ScoutState)
+    graph.add_node("safety", safety_node)
+    graph.add_node("classify", classify_node)
+    for name, fn in _BRANCH_NODES.items():
+        graph.add_node(name, fn)
+    graph.add_node("finalize", finalize_node)
+
+    graph.set_entry_point("safety")
+    graph.add_edge("safety", "classify")
+    graph.add_conditional_edges("classify", route_query, {name: name for name in _BRANCH_NODES})
+    for name in _BRANCH_NODES:
+        graph.add_edge(name, "finalize")
+    graph.add_edge("finalize", END)
+
+    _compiled_graph = graph.compile()
+    return _compiled_graph
+
+
+def _run_sequential(state: dict) -> dict:
+    """Fallback executor mirroring the graph when langgraph isn't installed."""
+    def apply(update: dict) -> None:
+        for key, value in update.items():
+            if key in ("workflow_summary", "limitations"):
+                state[key] = state.get(key, []) + value
+            else:
+                state[key] = value
+
+    apply(safety_node(state))  # type: ignore[arg-type]
+    apply(classify_node(state))  # type: ignore[arg-type]
+    apply(_BRANCH_NODES[route_query(state)](state))  # type: ignore[index,arg-type]
+    apply(finalize_node(state))  # type: ignore[arg-type]
+    return state
+
+
 def run_scout_workflow(query: str) -> dict[str, Any]:
     """Run the full multi-agent workflow for a /api/scout request.
 
@@ -239,180 +592,39 @@ def run_scout_workflow(query: str) -> dict[str, Any]:
     retrieved_context_summary, workflow_summary, confidence_level, limitations.
     """
     store = get_data_store()
-    all_players = store.get_players()
-    team_profiles = store.get_team_profiles()
+    initial_state: dict = {
+        "query": query,
+        "all_players": store.get_players(),
+        "team_profiles": store.get_team_profiles(),
+        "workflow_summary": [],
+        "limitations": [],
+        "recommended_players": [],
+        "retrieved_context_summary": [],
+        "answer": "",
+        "tactical_notes_text": "",
+    }
 
-    workflow_summary: list[str] = []
-    limitations: list[str] = []
+    try:
+        final_state = _build_graph().invoke(initial_state)
+    except ImportError:
+        logger.warning("langgraph not installed; running sequential fallback workflow")
+        final_state = _run_sequential(initial_state)
 
-    # --- Safety Agent (pre-check) ---------------------------------------
-    injection_flags = detect_prompt_injection(query)
-    if injection_flags:
-        limitations.append(
-            "The query contained patterns associated with prompt injection or unsafe "
-            "requests (e.g. attempts to reveal hidden instructions or secrets). "
-            "These were ignored and only the football scouting request was processed."
-        )
-    workflow_summary.append("Safety agent screened the input for unsafe or out-of-scope requests.")
-
-    # --- Query Classifier --------------------------------------------------
-    query_type, keywords = classify_query(query, all_players, team_profiles)
-    workflow_summary.append(f"Query classifier identified this as a '{query_type.replace('_', ' ')}' request.")
-
-    recommended_players: list[dict[str, Any]] = []
-    answer = ""
-    retrieved_context_summary: list[str] = []
-    tactical_notes_text = ""
-
-    matched_player_ids = [
-        p["player_id"] for p in all_players if p.get("player_name") in keywords["player_names"]
-    ]
-
-    if query_type == "player_search":
-        recommended_players, constraints = stats_agent(query, keywords)
-        workflow_summary.append(
-            f"Stats agent filtered and ranked {len(recommended_players)} player(s) "
-            f"from the sample dataset based on the requested criteria."
-        )
-        rag = retrieve_context(query, matched_player_ids)
-        retrieved_context_summary = rag["retrieved_context_summary"]
-        workflow_summary.append("SQL RAG retriever pulled supporting scouting notes where available.")
-        answer = generate_player_search_answer(query, recommended_players)
-        if rag["scouting_notes"]:
-            extra = " ".join(
-                f"{n.get('player_name')}: {n.get('profile_summary')}" for n in rag["scouting_notes"][:2]
-            )
-            answer += f" Additional scouting context: {extra}"
-
-    elif query_type == "player_comparison":
-        compare_ids = matched_player_ids[:5] if len(matched_player_ids) >= 2 else [p["player_id"] for p in all_players[:2]]
-        players = [store.get_player(pid) for pid in compare_ids]
-        players = [p for p in players if p]
-        comparison = build_comparison(players)
-        recommended_players = players
-        workflow_summary.append(f"Comparison agent built a side-by-side comparison across {len(comparison['comparison_table'])} metrics.")
-        rag = retrieve_context(query, compare_ids)
-        retrieved_context_summary = rag["retrieved_context_summary"]
-        workflow_summary.append("SQL RAG retriever pulled scouting notes for the compared players.")
-        answer = generate_comparison_narrative(comparison)
-        if rag["scouting_notes"]:
-            notes_text = " ".join(
-                f"{n.get('player_name')} - tactical notes: {n.get('tactical_notes')}" for n in rag["scouting_notes"][:2]
-            )
-            tactical_notes_text = notes_text
-
-    elif query_type == "player_similarity":
-        reference_id = matched_player_ids[0] if matched_player_ids else (all_players[0]["player_id"] if all_players else None)
-        reference_player, results, constraints = similarity_agent(reference_id, query, keywords) if reference_id else (None, [], {})
-        if reference_player:
-            recommended_players = [r.player for r in results]
-            workflow_summary.append(f"Similarity agent ranked {len(results)} candidate(s) against {reference_player.get('player_name')}.")
-            rag = retrieve_context(query, [reference_player["player_id"]] + [p["player_id"] for p in recommended_players[:2]])
-            retrieved_context_summary = rag["retrieved_context_summary"]
-            workflow_summary.append("SQL RAG retriever pulled scouting context for the reference and top matches.")
-            results_dicts = [similarity_result_to_dict(r) for r in results]
-            answer = generate_similarity_explanation(reference_player, results_dicts)
-        else:
-            answer = "No reference player could be identified from the query. Try naming a specific player."
-            limitations.append("Reference player not found in the sample dataset.")
-
-    elif query_type == "tactical_fit":
-        team_name = keywords["team_names"][0] if keywords["team_names"] else None
-        team = store.get_team_profile(team_name) if team_name else None
-        if not team:
-            answer = "No matching team profile was found. Try one of: " + ", ".join(t["team_name"] for t in team_profiles)
-            limitations.append("Team not found in the sample dataset.")
-        else:
-            workflow_summary.append(f"Tactical fit agent evaluated candidates against {team['team_name']}'s tactical profile.")
-            if matched_player_ids:
-                candidates = [store.get_player(pid) for pid in matched_player_ids]
-            else:
-                position = keywords["positions"][0] if keywords["positions"] else None
-                position_group = keywords.get("position_groups", [None])[0] if keywords.get("position_groups") else None
-                if position:
-                    candidates = store.get_players(PlayerFilters(position=position))
-                elif position_group:
-                    candidates = [p for p in all_players if position_group.lower() in (p.get("position") or "").lower()]
-                else:
-                    candidates = all_players
-            candidates = [c for c in candidates if c]
-
-            scored = []
-            for player in candidates:
-                fit = compute_tactical_fit(player, team, all_players)
-                scored.append((fit["fit_score"], player, fit))
-            scored.sort(key=lambda x: x[0], reverse=True)
-            top = scored[:5]
-            recommended_players = [p for _, p, _ in top]
-
-            if top:
-                best_score, best_player, best_fit = top[0]
-                answer = generate_tactical_fit_summary(best_player, team, best_fit)
-                if len(top) > 1:
-                    others = ", ".join(f"{p.get('player_name')} ({s}/100)" for s, p, _ in top[1:4])
-                    answer += f" Other candidates assessed: {others}."
-                tactical_notes_text = team.get("tactical_style", "")
-            else:
-                answer = f"No candidates were available to evaluate against {team['team_name']}."
-
-            rag = retrieve_context(query, matched_player_ids)
-            retrieved_context_summary = rag["retrieved_context_summary"] or [
-                f"Team profile retrieved for {team['team_name']} ({team['formation']}, {team['possession_style']})."
-            ]
-            workflow_summary.append("SQL RAG retriever pulled the team's tactical profile and any related player notes.")
-
-    elif query_type == "scouting_report":
-        target_id = matched_player_ids[0] if matched_player_ids else None
-        player = store.get_player(target_id) if target_id else None
-        if not player:
-            answer = "No matching player was found to generate a scouting report. Try naming a specific player."
-            limitations.append("Player not found in the sample dataset.")
-        else:
-            rag = retrieve_context(query, [player["player_id"]])
-            retrieved_context_summary = rag["retrieved_context_summary"]
-            scouting_note = rag["scouting_notes"][0] if rag["scouting_notes"] else None
-            workflow_summary.append("SQL RAG retriever pulled the scouting note and stats for the requested player.")
-            report = generate_scouting_report(player, scouting_note)
-            recommended_players = [player]
-            answer = report["answer"]
-            tactical_notes_text = report["tactical_notes"]
-            limitations.extend([] if scouting_note else ["No detailed scouting note found - response based on statistics only."])
-            workflow_summary.append("Recommendation agent compiled a structured scouting report.")
-
-    else:  # general_question
-        answer = generate_general_answer(query)
-        retrieved_context_summary = ["No specific player or team context matched this general query."]
-
-    # --- Recommendation Agent: assemble final narrative ---------------------
-    if tactical_notes_text:
-        answer = f"{answer} Tactical notes: {tactical_notes_text}"
-
-    if not recommended_players:
-        limitations.append("No specific players could be confidently recommended for this query.")
-
-    confidence_level = _confidence_level(len(recommended_players), bool(retrieved_context_summary) and retrieved_context_summary != ["No specific player or team context matched this general query."])
-
-    limitations.append(
-        "All data is sample/demo data for a free-tier portfolio project and should not be used for real "
-        "transfer or scouting decisions."
-    )
-
-    workflow_summary.append(f"Recommendation agent finalised the response with confidence level: {confidence_level}.")
-
+    recommended_players = final_state.get("recommended_players", [])
     supporting_statistics = build_supporting_statistics(recommended_players) if recommended_players else []
 
     # Persist a lightweight log of the query (best-effort, never raises)
     try:
-        store.log_scout_query(query, answer[:500])
+        store.log_scout_query(query, final_state.get("answer", "")[:500])
     except Exception:  # pragma: no cover - logging must never break the request
         pass
 
     return assemble_scout_response(
-        answer=answer,
+        answer=final_state.get("answer", ""),
         recommended_players=recommended_players,
         supporting_statistics=supporting_statistics,
-        retrieved_context_summary=retrieved_context_summary,
-        workflow_summary=workflow_summary,
-        confidence_level=confidence_level,
-        limitations=limitations,
+        retrieved_context_summary=final_state.get("retrieved_context_summary", []),
+        workflow_summary=final_state.get("workflow_summary", []),
+        confidence_level=final_state.get("confidence_level", "Low"),
+        limitations=final_state.get("limitations", []),
     )

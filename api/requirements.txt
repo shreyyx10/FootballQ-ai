@@ -7,8 +7,12 @@ pydantic==2.9.2
 # PostgreSQL connectivity (Neon/Supabase free tier)
 psycopg[binary]==3.2.13
 
-# Optional real LLM mode (only used if ENABLE_REAL_LLM=true and OPENAI_API_KEY is set)
+# Real LLM mode (ENABLE_REAL_LLM=true). Works with OpenAI, or any
+# OpenAI-compatible endpoint via LLM_BASE_URL (e.g. local Ollama).
 openai==1.54.4
+
+# Multi-agent workflow graph for /api/scout
+langgraph==0.2.60
 
 # Optional Qdrant free-tier vector search (only used if ENABLE_QDRANT=true)
 qdrant-client==1.12.1

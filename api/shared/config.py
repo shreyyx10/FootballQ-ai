@@ -75,6 +75,10 @@ class Settings:
     enable_real_llm: bool = field(default_factory=lambda: _get_bool("ENABLE_REAL_LLM", False))
     openai_api_key: str = field(default_factory=lambda: os.environ.get("OPENAI_API_KEY", ""))
     llm_model: str = field(default_factory=lambda: os.environ.get("LLM_MODEL", "gpt-4o-mini"))
+    # Optional OpenAI-compatible endpoint. Point at a local Ollama server
+    # (http://localhost:11434/v1) to run real-LLM mode with zero API cost;
+    # OPENAI_API_KEY can then be any non-empty placeholder (Ollama ignores it).
+    llm_base_url: str = field(default_factory=lambda: os.environ.get("LLM_BASE_URL", ""))
 
     # Optional Qdrant vector search
     enable_qdrant: bool = field(default_factory=lambda: _get_bool("ENABLE_QDRANT", False))
