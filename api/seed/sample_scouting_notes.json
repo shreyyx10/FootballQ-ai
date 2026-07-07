@@ -1,0 +1,629 @@
+[
+  {
+    "player_id": "p001",
+    "player_name": "Lamine Yamal",
+    "profile_summary": "An 18-year-old right-sided attacker who already operates as one of the most productive young wide players in Europe, combining elite dribbling with a mature passing range.",
+    "strengths": [
+      "Exceptional 1v1 dribbling and close control in tight spaces",
+      "High chance creation output (xAG) for his age",
+      "Composed decision-making under pressure on the ball",
+      "Capable of cutting inside onto his stronger left foot to shoot or play through balls"
+    ],
+    "weaknesses": [
+      "Lower defensive workload, limited tracking back",
+      "Injury-management concerns given heavy minutes at a young age",
+      "Can occasionally over-rely on individual dribbles rather than quick combination play"
+    ],
+    "tactical_notes": "Thrives in a possession-based 4-3-3 as an inverted right winger, staying high and wide to stretch the back line before drifting infield to combine with central midfielders and overlap with the full-back.",
+    "role_fit": "Best suited to systems built around positional play with overlapping full-backs and a goal-side winger who can isolate defenders 1v1.",
+    "risk_notes": "Workload management is the main risk - clubs should monitor minutes given his age and the physical demands of his playing style."
+  },
+  {
+    "player_id": "p002",
+    "player_name": "Bukayo Saka",
+    "profile_summary": "A two-footed wide forward who blends consistent goal output with high-volume defensive pressing, making him one of the most complete attacking wingers in the Premier League.",
+    "strengths": [
+      "Reliable goal and assist numbers from the right flank",
+      "Strong pressing intensity and willingness to track back",
+      "Comfortable cutting inside or going outside depending on the full-back's positioning",
+      "Set-piece delivery and end product from wide areas"
+    ],
+    "weaknesses": [
+      "History of recurring muscular injuries from heavy workload",
+      "Can become isolated in teams without overlapping full-back support",
+      "Occasionally tries to do too much individually in the final third"
+    ],
+    "tactical_notes": "Operates as a right-sided forward in a front three within a high-press 4-3-3, combining with an overlapping full-back and inverted central midfielders to overload the half-space.",
+    "role_fit": "Fits high-intensity, possession-heavy systems that demand two-way wide forwards capable of both creating and pressing.",
+    "risk_notes": "Injury history is the primary risk factor; rotation policy and squad depth should be considered when signing."
+  },
+  {
+    "player_id": "p003",
+    "player_name": "Vinicius Junior",
+    "profile_summary": "An elite left-sided forward whose blend of explosive pace, finishing and chance creation makes him a focal point of any transition-based attack.",
+    "strengths": [
+      "Outstanding output in both goals and assists",
+      "Devastating in transition due to acceleration and dribbling at speed",
+      "Strong left-footed finishing from wide and central positions",
+      "Big-game performance record in knockout football"
+    ],
+    "weaknesses": [
+      "Defensive contribution remains limited",
+      "Can be drawn into confrontations and pick up bookings",
+      "Effectiveness drops in low-block, low-space games"
+    ],
+    "tactical_notes": "Best deployed as a left-sided forward in a counter-attacking or transition-heavy 4-3-3, given space to run in behind a high defensive line.",
+    "role_fit": "Ideal for teams that win the ball in midfield and look to attack quickly through wide channels.",
+    "risk_notes": "Disciplinary record (yellow/red cards) is worth monitoring for suspension risk in tight fixture schedules."
+  },
+  {
+    "player_id": "p004",
+    "player_name": "Rodrygo",
+    "profile_summary": "A versatile right-sided or central attacker known for intelligent movement off the ball and clinical finishing in big moments.",
+    "strengths": [
+      "Versatile across multiple forward positions",
+      "Strong movement to find pockets of space between lines",
+      "Composed finisher with both feet",
+      "Good combination play in tight areas"
+    ],
+    "weaknesses": [
+      "Lower defensive pressing numbers compared to peers",
+      "Can be inconsistent in extended run of games",
+      "Sometimes overshadowed positionally by more dominant wide players"
+    ],
+    "tactical_notes": "Effective as a right-sided forward who can drift into a false-nine role, useful for teams wanting positional rotation in the front line.",
+    "role_fit": "Suits systems with fluid front-three rotations and central overloads.",
+    "risk_notes": "Squad rotation and minutes management are the main considerations rather than performance risk."
+  },
+  {
+    "player_id": "p005",
+    "player_name": "Rafael Leao",
+    "profile_summary": "A powerful left-footed winger whose ball-carrying ability from deep positions creates significant transition threat.",
+    "strengths": [
+      "Elite progressive carrying numbers, breaking lines with the ball at his feet",
+      "Direct dribbling threat in 1v1 situations",
+      "Physical profile suited to duels and holding off defenders",
+      "Good end product when running at retreating defences"
+    ],
+    "weaknesses": [
+      "Decision-making in the final pass can be inconsistent",
+      "Lower involvement in build-up phases",
+      "Pressing intensity below top-tier wingers"
+    ],
+    "tactical_notes": "Best used as a left winger in a counter-attacking system, dropping deep to receive and driving forward into space.",
+    "role_fit": "Suits teams that defend in a mid-to-low block and look to transition quickly through wide carriers.",
+    "risk_notes": "Consistency across a 38-game season has historically been a question mark."
+  },
+  {
+    "player_id": "p006",
+    "player_name": "Khvicha Kvaratskhelia",
+    "profile_summary": "A technically gifted left-footed winger who combines close control, unpredictability and a high creative output from the left flank.",
+    "strengths": [
+      "Excellent dribbling in congested areas",
+      "Strong chance creation (xAG) and key pass numbers",
+      "Comfortable operating in both wide and half-space positions",
+      "Good pressing work-rate for a primary creator"
+    ],
+    "weaknesses": [
+      "Effectiveness can dip against deep, disciplined defensive blocks",
+      "Occasional tendency to hold onto the ball too long",
+      "Adaptation period typical when moving to a new league"
+    ],
+    "tactical_notes": "Operates as a left-sided forward who can also rotate into a free attacking-midfield role, well suited to a 4-2-3-1 or 4-3-3 with rotation.",
+    "role_fit": "Fits possession-oriented teams that value individual creativity within a structured framework.",
+    "risk_notes": "League-adaptation curve should be factored into short-term performance expectations after a transfer."
+  },
+  {
+    "player_id": "p007",
+    "player_name": "Michael Olise",
+    "profile_summary": "A right-footed wide player with an unusually balanced profile of dribbling, progressive passing and chance creation from the right flank.",
+    "strengths": [
+      "High progressive pass output for a winger",
+      "Strong set-piece delivery and crossing range",
+      "Good dribbling success rate in wide areas",
+      "Versatile enough to play as a inverted winger or attacking midfielder"
+    ],
+    "weaknesses": [
+      "Injury history including muscular issues",
+      "Goal output lower than elite peers at his position",
+      "Adapting to a new league's physical intensity"
+    ],
+    "tactical_notes": "Suited to a right-wing role in a possession-based 4-2-3-1, providing width and delivery while supporting overlaps from a full-back.",
+    "role_fit": "Fits teams that build attacks through combination play and crossing from wide areas.",
+    "risk_notes": "Injury record warrants squad-depth planning at the wide-forward positions."
+  },
+  {
+    "player_id": "p008",
+    "player_name": "Erling Haaland",
+    "profile_summary": "A physically dominant penalty-box striker with an extraordinary goals-per-90 record and elite finishing efficiency.",
+    "strengths": [
+      "Outstanding xG and goal conversion rate",
+      "Powerful in aerial and physical duels",
+      "Clinical finishing with both feet",
+      "Constant penalty-area threat that occupies two centre-backs"
+    ],
+    "weaknesses": [
+      "Limited involvement in general build-up play",
+      "Lower chance-creation output for teammates",
+      "Can become isolated if service from wide areas is poor"
+    ],
+    "tactical_notes": "Best deployed as a central striker in a system that supplies high-quality service from wide areas and creative midfielders.",
+    "role_fit": "Fits teams built around crossing, cutbacks and quick combination play into the box.",
+    "risk_notes": "Heavily reliant on service quality - a drop in chance creation from teammates directly affects output."
+  },
+  {
+    "player_id": "p009",
+    "player_name": "Lautaro Martinez",
+    "profile_summary": "A complete modern striker who combines clinical finishing with strong link-up play and pressing intensity.",
+    "strengths": [
+      "High and consistent goal output",
+      "Good link-up play dropping into midfield",
+      "Strong pressing numbers for a forward",
+      "Composed finisher in one-on-one situations"
+    ],
+    "weaknesses": [
+      "Aerial threat slightly below elite target-man profiles",
+      "Can be quiet in matches with limited service",
+      "Occasional drop in efficiency against deep low blocks"
+    ],
+    "tactical_notes": "Fits as a lone striker or part of a front-two, dropping to link play while a partner attacks space behind.",
+    "role_fit": "Suits possession teams that value a striker who can both finish and combine in build-up.",
+    "risk_notes": "Minor injury niggles historically; squad rotation across congested periods recommended."
+  },
+  {
+    "player_id": "p010",
+    "player_name": "Victor Osimhen",
+    "profile_summary": "An explosive, athletic striker whose pace in behind and aerial power make him a constant in-behind and aerial threat.",
+    "strengths": [
+      "Elite pace to attack space in behind defensive lines",
+      "Strong aerial presence for crosses and set pieces",
+      "High shot volume and conversion rate",
+      "Effective in transition-based attacking systems"
+    ],
+    "weaknesses": [
+      "Injury history affecting consistent availability",
+      "Limited involvement in deep build-up play",
+      "Can be marginalised against teams that defend with a low, compact block"
+    ],
+    "tactical_notes": "Best in a system that plays direct, vertical football with quick service in behind a high defensive line.",
+    "role_fit": "Suits counter-attacking teams or those who dominate territory and create in-behind opportunities via through-balls.",
+    "risk_notes": "Durability across a full season is the key risk factor for prospective buyers."
+  },
+  {
+    "player_id": "p011",
+    "player_name": "Kylian Mbappe",
+    "profile_summary": "An elite goal-scoring forward whose combination of speed, finishing and big-match experience places him among the most dangerous attackers in the world.",
+    "strengths": [
+      "World-class finishing and conversion rates",
+      "Elite acceleration and pace in transition",
+      "High chance creation output alongside goal output",
+      "Big-game and knockout-tournament performance record"
+    ],
+    "weaknesses": [
+      "Pressing contribution below some peers",
+      "Tactical fit can require system adjustments around his preferred central/left zones",
+      "High wage and market value impact on squad-building flexibility"
+    ],
+    "tactical_notes": "Effective as a central striker or left-sided forward in systems that prioritise verticality and 1v1 space for him to attack.",
+    "role_fit": "Fits teams built to maximise individual brilliance in transition while maintaining defensive solidity elsewhere.",
+    "risk_notes": "Squad-building and financial flexibility are the main practical considerations given his profile and value."
+  },
+  {
+    "player_id": "p012",
+    "player_name": "Harry Kane",
+    "profile_summary": "A complete striker renowned for combining elite finishing with exceptional deep-link play and chance creation for others.",
+    "strengths": [
+      "Outstanding combination of goals and assists",
+      "Elite passing range including long-range progressive passes",
+      "Strong aerial ability and hold-up play",
+      "Leadership and experience in big matches"
+    ],
+    "weaknesses": [
+      "Mobility has gradually declined with age",
+      "Lower pressing intensity than younger forwards",
+      "Heavy reliance on him as a creative outlet can be exploited if marked tightly"
+    ],
+    "tactical_notes": "Fits as a deep-lying or traditional number 9 in a possession system that uses his passing range to dictate tempo from advanced areas.",
+    "role_fit": "Suits teams wanting a striker who is also a creative hub, ideal for systems with fast wide forwards exploiting his passes.",
+    "risk_notes": "Age-related physical decline should be factored into medium-to-long-term squad planning."
+  },
+  {
+    "player_id": "p013",
+    "player_name": "Robert Lewandowski",
+    "profile_summary": "A veteran elite finisher whose movement and positioning inside the box remain exceptional despite advancing age.",
+    "strengths": [
+      "Elite movement and finishing instincts in the box",
+      "Strong aerial threat on crosses and set pieces",
+      "Experience reading defensive structures to find space",
+      "Consistent goal output relative to minutes played"
+    ],
+    "weaknesses": [
+      "Reduced pressing range due to age",
+      "Pace to attack in behind has diminished",
+      "Physical recovery between matches requires careful management"
+    ],
+    "tactical_notes": "Best as a focal-point striker in a possession system that creates high-quality chances inside the box rather than relying on him to press or carry the ball.",
+    "role_fit": "Suits teams with strong service from wide areas and central creators, minimising his defensive workload.",
+    "risk_notes": "Age and recovery time should inform rotation policy across congested fixture periods."
+  },
+  {
+    "player_id": "p014",
+    "player_name": "Jamal Musiala",
+    "profile_summary": "A highly creative attacking midfielder whose close control and ability to operate between the lines make him difficult to mark.",
+    "strengths": [
+      "Outstanding dribbling and close control in tight spaces",
+      "High chance creation (xAG) and shot-creating actions",
+      "Versatile across attacking-midfield and wide forward positions",
+      "Good progressive carrying to break defensive lines"
+    ],
+    "weaknesses": [
+      "Injury history including significant lower-body issues",
+      "Lower defensive pressing volume compared to some peers",
+      "Effectiveness can dip when forced wide rather than central"
+    ],
+    "tactical_notes": "Best utilised as a central attacking midfielder or inside forward in a possession system, given freedom to drift into pockets between the lines.",
+    "role_fit": "Fits teams that build through central combination play and want a creative outlet between the lines.",
+    "risk_notes": "Injury history is the key risk; careful workload management is recommended."
+  },
+  {
+    "player_id": "p015",
+    "player_name": "Florian Wirtz",
+    "profile_summary": "An elite creative midfielder with outstanding chance-creation numbers and a rare combination of vision, dribbling and pressing intensity.",
+    "strengths": [
+      "Elite xAG and key-pass output among attacking midfielders",
+      "Strong progressive carrying and dribbling in central areas",
+      "High pressing intensity for a creative player",
+      "Versatile across number 10, left-wing and central-midfield roles"
+    ],
+    "weaknesses": [
+      "Adaptation period when moving to a new league and system",
+      "Goal output slightly behind his creative numbers",
+      "Can be a focal point for opposition man-marking schemes"
+    ],
+    "tactical_notes": "Best deployed centrally as a number 10 or left-sided attacking midfielder in a possession system that funnels play through him.",
+    "role_fit": "Suits high-pressing, possession-dominant teams that want a creative hub who also contributes defensively.",
+    "risk_notes": "Adaptation to a new league's physicality and tempo is the primary short-term consideration."
+  },
+  {
+    "player_id": "p016",
+    "player_name": "Phil Foden",
+    "profile_summary": "A technically excellent attacking midfielder capable of operating across multiple advanced positions with strong end product.",
+    "strengths": [
+      "Versatile across attacking-midfield, wide and central roles",
+      "Strong shot and chance-creation numbers",
+      "Excellent close control in tight areas",
+      "Good final-third decision-making under pressure"
+    ],
+    "weaknesses": [
+      "Form can fluctuate across a season",
+      "Defensive pressing output below some peers",
+      "Best output tied closely to overall team rhythm"
+    ],
+    "tactical_notes": "Fits as an attacking midfielder or inside forward in a possession-dominant system with rotational movement in the final third.",
+    "role_fit": "Suits teams with high possession share that create through combination play in tight central areas.",
+    "risk_notes": "Performance consistency across a long season is the main consideration for squad planning."
+  },
+  {
+    "player_id": "p017",
+    "player_name": "Martin Odegaard",
+    "profile_summary": "A composed, high-IQ attacking midfielder whose passing range and movement make him the creative fulcrum of his team.",
+    "strengths": [
+      "Elite progressive passing and chance creation",
+      "Excellent spatial awareness to find pockets between lines",
+      "Strong set-piece delivery",
+      "High pass completion percentage for an attacking player"
+    ],
+    "weaknesses": [
+      "Lower goal output relative to elite number 10s",
+      "Physical duels can be a challenge against more powerful midfielders",
+      "Effectiveness reduced if isolated from supporting runners"
+    ],
+    "tactical_notes": "Best as a number 10 or right-sided attacking midfielder in a possession system, dropping into midfield to dictate tempo.",
+    "role_fit": "Fits teams built on patient possession and combination play in the final third.",
+    "risk_notes": "Physical robustness against high-press, aggressive opponents is worth monitoring."
+  },
+  {
+    "player_id": "p018",
+    "player_name": "Pedri",
+    "profile_summary": "A technically elite central midfielder whose close control, passing range and tempo-setting ability define modern possession football.",
+    "strengths": [
+      "Outstanding progressive passing output",
+      "Exceptional close control and press resistance",
+      "High pass completion percentage in tight spaces",
+      "Strong tactical intelligence to dictate match tempo"
+    ],
+    "weaknesses": [
+      "Injury history including recurring muscular issues",
+      "Lower direct goal/assist output than advanced attackers",
+      "Defensive ground-covering below holding-midfielder standards"
+    ],
+    "tactical_notes": "Best as a central midfielder in a possession-based 4-3-3, operating between the lines to receive, turn and progress play.",
+    "role_fit": "Ideal for teams whose identity is built on retaining possession and progressing the ball through midfield combinations.",
+    "risk_notes": "Recurring injury history is the primary risk factor and should inform medical due diligence."
+  },
+  {
+    "player_id": "p019",
+    "player_name": "Jude Bellingham",
+    "profile_summary": "A dynamic central midfielder combining box-to-box running, goal-scoring instincts and strong defensive engagement.",
+    "strengths": [
+      "High goal output for a central midfielder",
+      "Strong progressive carrying and late box-arrival movement",
+      "Good tackling and defensive engagement numbers",
+      "Versatile across multiple midfield roles"
+    ],
+    "weaknesses": [
+      "High involvement can occasionally affect positional discipline",
+      "Disciplinary record (cards) worth monitoring",
+      "Workload management important given his all-action style"
+    ],
+    "tactical_notes": "Fits as an advanced central midfielder in a 4-3-3, combining late runs into the box with defensive support in transition.",
+    "role_fit": "Suits teams wanting a goal-scoring midfielder who also contributes defensively in a balanced midfield three.",
+    "risk_notes": "Workload and disciplinary record should be monitored across a demanding fixture calendar."
+  },
+  {
+    "player_id": "p020",
+    "player_name": "Gavi",
+    "profile_summary": "An energetic, press-resistant central midfielder whose intensity and ball-retention skills make him a key tempo-setter.",
+    "strengths": [
+      "High pressing intensity and ball-recovery numbers",
+      "Strong press resistance in tight areas",
+      "Good progressive carrying for a central midfielder",
+      "High work-rate across both phases of play"
+    ],
+    "weaknesses": [
+      "Injury history including significant knee issues",
+      "Decision-making in the final third still developing",
+      "Can be drawn out of position by his intensity"
+    ],
+    "tactical_notes": "Best as a central or left-sided midfielder in a high-press possession system that values intensity and ball retention.",
+    "role_fit": "Fits teams whose midfield identity is built on pressing triggers and quick ball recovery.",
+    "risk_notes": "Long-term injury management following past knee surgery is an important consideration."
+  },
+  {
+    "player_id": "p021",
+    "player_name": "Eduardo Camavinga",
+    "profile_summary": "A versatile, athletic midfielder capable of playing across the midfield three with strong defensive engagement and ball-carrying ability.",
+    "strengths": [
+      "High tackling and interception numbers",
+      "Strong progressive carrying to escape pressure",
+      "Versatile across defensive and central midfield roles",
+      "Good agility to cover ground laterally"
+    ],
+    "weaknesses": [
+      "Final-third output remains limited",
+      "Positional discipline can vary depending on role",
+      "Passing range less expansive than elite deep-lying playmakers"
+    ],
+    "tactical_notes": "Fits as a left-sided central or defensive midfielder in a system requiring athletic cover and ball progression under pressure.",
+    "role_fit": "Suits teams that need a dynamic, two-way midfielder capable of covering multiple roles across a season.",
+    "risk_notes": "Role flexibility is a strength, but a settled long-term position may maximise development."
+  },
+  {
+    "player_id": "p022",
+    "player_name": "Declan Rice",
+    "profile_summary": "A defensively dominant central midfielder with excellent ball-recovery numbers and increasingly influential passing range.",
+    "strengths": [
+      "Elite tackling and interception output",
+      "Strong aerial duel success in midfield",
+      "Good progressive passing to start attacks from deep",
+      "Leadership and positional discipline"
+    ],
+    "weaknesses": [
+      "Goal/assist output still below elite attacking midfielders",
+      "Pace can be tested against the quickest transition players",
+      "Primarily effective in settled, structured systems"
+    ],
+    "tactical_notes": "Best as a holding or box-to-box midfielder in a 4-3-3, screening the back line while progressing the ball into midfield.",
+    "role_fit": "Fits possession-based teams that need defensive solidity without sacrificing the ability to build play from deep.",
+    "risk_notes": "Few significant risk factors; primarily a positional and tactical-fit consideration."
+  },
+  {
+    "player_id": "p023",
+    "player_name": "Rodri",
+    "profile_summary": "An elite deep-lying midfielder whose tactical intelligence, passing range and tempo control underpin his team's entire structure.",
+    "strengths": [
+      "Outstanding progressive passing and tempo control",
+      "Excellent positional sense to screen the back line",
+      "Strong aerial and tackling numbers for a deep midfielder",
+      "High pass completion percentage under pressure"
+    ],
+    "weaknesses": [
+      "Mobility to cover wide areas is moderate compared to younger peers",
+      "Heavy tactical reliance on him can be exploited if man-marked",
+      "Recovery from injuries can affect squad rhythm given his importance"
+    ],
+    "tactical_notes": "Best as the single pivot in a possession-based 4-3-3 or 3-2-4-1, dictating tempo and distribution from deep.",
+    "role_fit": "Fits teams whose entire structure depends on a controlling deep-lying midfielder.",
+    "risk_notes": "Given his outsized tactical importance, injury absence has historically had a significant team-level impact."
+  },
+  {
+    "player_id": "p024",
+    "player_name": "Aurelien Tchouameni",
+    "profile_summary": "A physically imposing defensive midfielder whose positioning and ball-winning ability provide a defensive platform for more progressive teammates.",
+    "strengths": [
+      "Strong tackling and interception numbers",
+      "Good aerial presence in midfield duels",
+      "Reliable positional discipline screening the back line",
+      "Composed under pressure when playing out from the back"
+    ],
+    "weaknesses": [
+      "Progressive passing range below elite deep-lying playmakers",
+      "Final-third involvement minimal",
+      "Can be exposed in matches requiring more proactive ball-carrying"
+    ],
+    "tactical_notes": "Best as a defensive midfielder in a double pivot, providing defensive cover alongside a more progressive partner.",
+    "role_fit": "Suits teams that prioritise defensive solidity and structured build-up over individual progression from midfield.",
+    "risk_notes": "Primarily a tactical-fit consideration rather than a risk factor."
+  },
+  {
+    "player_id": "p025",
+    "player_name": "Joshua Kimmich",
+    "profile_summary": "An experienced, versatile midfielder whose passing range and game intelligence allow him to control matches from deep or wide positions.",
+    "strengths": [
+      "Elite progressive passing and assist output",
+      "High pass completion percentage under pressure",
+      "Versatile across defensive midfield and right-back roles",
+      "Strong set-piece delivery"
+    ],
+    "weaknesses": [
+      "Defensive ground-coverage has declined slightly with age",
+      "Pace can be tested by quick wide forwards when played at full-back",
+      "Effectiveness tied to team's overall possession share"
+    ],
+    "tactical_notes": "Best as a deep-lying midfielder in a possession system, dictating tempo and distribution similar to a quarterback role.",
+    "role_fit": "Fits teams built around sustained possession and progressive passing from deep positions.",
+    "risk_notes": "Age-related considerations apply to long-term squad planning rather than immediate performance."
+  },
+  {
+    "player_id": "p026",
+    "player_name": "Trent Alexander-Arnold",
+    "profile_summary": "An attack-minded full-back whose passing range from deep makes him one of the most creative defenders in the game.",
+    "strengths": [
+      "Elite progressive passing and assist numbers from full-back",
+      "Exceptional set-piece delivery",
+      "Strong ability to invert into midfield and dictate play",
+      "High chance creation output for a defender"
+    ],
+    "weaknesses": [
+      "Defensive positioning and recovery pace have drawn scrutiny against quick wide forwards",
+      "Effectiveness reduced in deep defensive blocks without ball progression duties",
+      "Tactical adaptation required in new systems"
+    ],
+    "tactical_notes": "Best as a right-back in a possession system that allows him to invert into a midfield passing role during build-up.",
+    "role_fit": "Fits teams that build attacks through their full-backs and want defensive players who function as auxiliary playmakers.",
+    "risk_notes": "Defensive solidity in transition is the main consideration when assessing tactical fit."
+  },
+  {
+    "player_id": "p027",
+    "player_name": "Alphonso Davies",
+    "profile_summary": "An explosive left-back whose pace and progressive carrying ability provide constant width and transition threat.",
+    "strengths": [
+      "Elite pace for recovery runs and overlapping attacks",
+      "Strong progressive carrying numbers from left-back",
+      "Good 1v1 dribbling success in wide areas",
+      "High work-rate covering the full width of the pitch"
+    ],
+    "weaknesses": [
+      "Defensive positioning can be inconsistent when caught high upfield",
+      "Crossing and final-ball accuracy room for improvement",
+      "Injury history including significant lower-body issues"
+    ],
+    "tactical_notes": "Best as a left-back in a high-line possession system, overlapping with a winger to create 2v1 situations on the flank.",
+    "role_fit": "Fits teams that play with an aggressive defensive line and want width provided by attacking full-backs.",
+    "risk_notes": "Injury history (including ACL) means medical assessment and gradual workload increases are recommended."
+  },
+  {
+    "player_id": "p028",
+    "player_name": "Theo Hernandez",
+    "profile_summary": "A powerful, attack-minded left-back combining physicality with strong progressive carrying and goal-scoring ability for a defender.",
+    "strengths": [
+      "High progressive carrying output from deep positions",
+      "Strong physical profile in duels",
+      "Good goal-scoring record for a full-back",
+      "Effective overlapping and underlapping runs"
+    ],
+    "weaknesses": [
+      "Defensive positioning discipline can be inconsistent",
+      "Disciplinary record (cards) worth monitoring",
+      "Recovery pace can be tested in transition"
+    ],
+    "tactical_notes": "Best as a left-back in a system with a back three or back four that encourages attacking overlaps and underlaps.",
+    "role_fit": "Fits teams that want physically dominant, attack-minded full-backs contributing directly to goal output.",
+    "risk_notes": "Disciplinary record and defensive discipline are the main considerations for tactical fit."
+  },
+  {
+    "player_id": "p029",
+    "player_name": "Achraf Hakimi",
+    "profile_summary": "An athletic, two-way right-back whose pace and crossing ability make him a constant outlet on the right flank.",
+    "strengths": [
+      "Elite pace for both attacking and defensive transitions",
+      "Strong progressive carrying and crossing numbers",
+      "Good defensive recovery speed",
+      "Consistent goal and assist contributions for a full-back"
+    ],
+    "weaknesses": [
+      "Defensive positioning in central areas can be tested",
+      "1v1 defending against technical wingers occasionally inconsistent",
+      "Effectiveness reduced in deep, narrow defensive systems"
+    ],
+    "tactical_notes": "Best as a right-back (or wing-back) in a system that uses width and transitions, providing an outlet on both sides of the ball.",
+    "role_fit": "Fits teams playing with a back three/wing-back system or an attacking back four that exploits the flanks.",
+    "risk_notes": "Primarily a tactical-fit and positional consideration rather than a major risk factor."
+  },
+  {
+    "player_id": "p030",
+    "player_name": "William Saliba",
+    "profile_summary": "A composed, physically dominant centre-back whose positioning and ball-playing ability anchor a high defensive line.",
+    "strengths": [
+      "Excellent positioning and aerial duel success",
+      "Strong recovery pace covering behind a high line",
+      "Reliable passing under pressure to start build-up",
+      "Composed in 1v1 defending situations"
+    ],
+    "weaknesses": [
+      "Goal/assist output minimal as expected for the position",
+      "Occasional lapses in concentration on transitions",
+      "Limited ball-carrying into midfield compared to modern progressive centre-backs"
+    ],
+    "tactical_notes": "Best as a centre-back in a high-defensive-line system that requires recovery pace and aerial dominance.",
+    "role_fit": "Fits possession-based teams that play out from the back and press high up the pitch.",
+    "risk_notes": "Few significant risk factors; a low-risk, high-floor defensive profile."
+  },
+  {
+    "player_id": "p031",
+    "player_name": "Virgil van Dijk",
+    "profile_summary": "An experienced, commanding centre-back whose reading of the game and aerial dominance provide defensive leadership.",
+    "strengths": [
+      "Elite aerial duel success and positioning",
+      "Strong passing range to launch attacks from the back",
+      "Leadership and communication organising the defensive line",
+      "Composed under pressure in possession"
+    ],
+    "weaknesses": [
+      "Recovery pace has declined with age",
+      "Effectiveness reduced against very high-speed transition attacks",
+      "Squad rotation important given his age profile"
+    ],
+    "tactical_notes": "Best as a centre-back in a mid-to-high defensive line, using positioning and reading of the game to compensate for reduced pace.",
+    "role_fit": "Fits possession-based teams that value distribution from the back and defensive organisation over raw recovery speed.",
+    "risk_notes": "Age-related decline in pace should be considered for long-term squad planning."
+  },
+  {
+    "player_id": "p032",
+    "player_name": "Antonio Rudiger",
+    "profile_summary": "An aggressive, physically dominant centre-back known for his duels, leadership and willingness to step into midfield.",
+    "strengths": [
+      "Strong tackling and aerial duel numbers",
+      "Aggressive ball-winning approach stepping out of the defensive line",
+      "Experience in high-pressure knockout matches",
+      "Vocal leadership organising the back line"
+    ],
+    "weaknesses": [
+      "Disciplinary record (cards) worth monitoring",
+      "Aggressive approach can occasionally be exploited by quick forwards",
+      "Age-related rotation considerations"
+    ],
+    "tactical_notes": "Best as a centre-back in a possession system that benefits from a defender willing to press into midfield to win the ball back.",
+    "role_fit": "Fits teams that play an aggressive, front-foot defensive style with a high line.",
+    "risk_notes": "Disciplinary record and age-related rotation are the main considerations."
+  },
+  {
+    "player_id": "p033",
+    "player_name": "Dayot Upamecano",
+    "profile_summary": "A mobile, ball-playing centre-back whose recovery pace and passing range suit modern high-line defensive systems.",
+    "strengths": [
+      "Strong recovery pace for a centre-back",
+      "Good passing range to progress play from the back",
+      "Solid aerial and tackling numbers",
+      "Comfortable in both back-three and back-four systems"
+    ],
+    "weaknesses": [
+      "Occasional lapses in concentration leading to risky situations",
+      "Decision-making under high pressure can be inconsistent",
+      "Discipline in tackling situations worth monitoring"
+    ],
+    "tactical_notes": "Best as a centre-back in a high-press, high-line system that values recovery pace and distribution from the back.",
+    "role_fit": "Fits possession-dominant teams that defend with an aggressive line and build out from the back.",
+    "risk_notes": "Primarily a tactical-fit consideration; concentration lapses are the main on-pitch risk."
+  }
+]

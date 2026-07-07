@@ -1,0 +1,72 @@
+[
+  {
+    "league_name": "Premier League",
+    "fbref_comp_id": "9",
+    "fbref_slug": "Premier-League",
+    "season_format": "YYYY-YYYY",
+    "current_season": "2025-2026"
+  },
+  {
+    "league_name": "La Liga",
+    "fbref_comp_id": "12",
+    "fbref_slug": "La-Liga",
+    "season_format": "YYYY-YYYY",
+    "current_season": "2025-2026"
+  },
+  {
+    "league_name": "Bundesliga",
+    "fbref_comp_id": "20",
+    "fbref_slug": "Bundesliga",
+    "season_format": "YYYY-YYYY",
+    "current_season": "2025-2026"
+  },
+  {
+    "league_name": "Serie A",
+    "fbref_comp_id": "11",
+    "fbref_slug": "Serie-A",
+    "season_format": "YYYY-YYYY",
+    "current_season": "2025-2026"
+  },
+  {
+    "league_name": "Ligue 1",
+    "fbref_comp_id": "13",
+    "fbref_slug": "Ligue-1",
+    "season_format": "YYYY-YYYY",
+    "current_season": "2025-2026"
+  },
+  {
+    "league_name": "Championship",
+    "fbref_comp_id": "10",
+    "fbref_slug": "Championship",
+    "season_format": "YYYY-YYYY",
+    "current_season": "2025-2026"
+  },
+  {
+    "league_name": "Eredivisie",
+    "fbref_comp_id": "23",
+    "fbref_slug": "Eredivisie",
+    "season_format": "YYYY-YYYY",
+    "current_season": "2025-2026"
+  },
+  {
+    "league_name": "Primeira Liga",
+    "fbref_comp_id": "32",
+    "fbref_slug": "Primeira-Liga",
+    "season_format": "YYYY-YYYY",
+    "current_season": "2025-2026"
+  },
+  {
+    "league_name": "Brazilian Serie A",
+    "fbref_comp_id": "24",
+    "fbref_slug": "Serie-A",
+    "season_format": "YYYY",
+    "current_season": "2026"
+  },
+  {
+    "league_name": "Liga Profesional Argentina",
+    "fbref_comp_id": "21",
+    "fbref_slug": "Primera-Division",
+    "season_format": "YYYY",
+    "current_season": "2026"
+  }
+]

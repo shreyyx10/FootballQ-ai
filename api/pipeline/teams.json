@@ -1,0 +1,32 @@
+[
+  {
+    "team_name": "Barcelona",
+    "fbref_id": "206d90db",
+    "fbref_slug": "Barcelona"
+  },
+  {
+    "team_name": "Manchester City",
+    "fbref_id": "b8fd03ef",
+    "fbref_slug": "Manchester-City"
+  },
+  {
+    "team_name": "Arsenal",
+    "fbref_id": "18bb7c10",
+    "fbref_slug": "Arsenal"
+  },
+  {
+    "team_name": "Real Madrid",
+    "fbref_id": "53a2f082",
+    "fbref_slug": "Real-Madrid"
+  },
+  {
+    "team_name": "Liverpool",
+    "fbref_id": "822bd0ba",
+    "fbref_slug": "Liverpool"
+  },
+  {
+    "team_name": "Bayern Munich",
+    "fbref_id": "054efa67",
+    "fbref_slug": "Bayern-Munich"
+  }
+]

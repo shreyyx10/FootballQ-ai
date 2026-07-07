@@ -1,0 +1,21 @@
+# Azure Functions Python worker
+azure-functions==1.21.3
+
+# Validation
+pydantic==2.9.2
+
+# PostgreSQL connectivity (Neon/Supabase free tier)
+psycopg[binary]==3.2.13
+
+# Optional real LLM mode (only used if ENABLE_REAL_LLM=true and OPENAI_API_KEY is set)
+openai==1.54.4
+
+# Optional Qdrant free-tier vector search (only used if ENABLE_QDRANT=true)
+qdrant-client==1.12.1
+
+# Optional FBref data pipeline (only used if FBREF_PIPELINE_ENABLED=true)
+requests==2.32.3
+pandas==2.2.3
+lxml==5.3.0
+beautifulsoup4==4.12.3
+html5lib==1.1

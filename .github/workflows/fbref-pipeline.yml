@@ -1,0 +1,81 @@
+# FBref data pipeline on GitHub Actions (free replacement for the original
+# Azure Functions timer trigger - see docs/APIFY_EVALUATION.md for context).
+#
+# Setup (one-time):
+#   1. Create a free Postgres DB (Neon: https://neon.tech, no card needed).
+#   2. Add its connection string as the repository secret DATABASE_URL
+#      (Settings -> Secrets and variables -> Actions).
+#   3. Run this workflow manually with job=schema, then job=seed, then
+#      job=backfill (~50 min). The daily schedule handles the rest.
+#
+# Notes:
+#   - Fetching goes through the Wayback Machine (FBREF_FETCH_MODE=wayback,
+#     the default): FBref blocks all non-browser clients, so pages are read
+#     from web.archive.org snapshots, with Save Page Now triggering fresh
+#     captures when snapshots are stale/missing. Runner IP doesn't matter.
+#   - The daily job takes ~10-30 min (Save Page Now captures are slow).
+#   - The first backfill run may exceed the job timeout or hit SPN quotas -
+#     that's fine: it's resumable and idempotent, just run job=backfill again
+#     (already-captured pages reuse their fresh snapshots and go fast).
+
+name: FBref pipeline
+
+on:
+  schedule:
+    - cron: "30 5 * * *"   # daily 05:30 UTC (after previous evening's matches are final)
+  workflow_dispatch:
+    inputs:
+      job:
+        description: "Which job to run"
+        type: choice
+        default: daily
+        options: [daily, backfill, schema, seed, health]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fbref-pipeline
+  cancel-in-progress: false
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    defaults:
+      run:
+        working-directory: api
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      FBREF_PIPELINE_ENABLED: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: api/requirements.txt
+
+      - name: Install pipeline dependencies
+        run: pip install "psycopg[binary]==3.2.13" requests==2.32.3 pandas==2.2.3 lxml==5.3.0 beautifulsoup4==4.12.3 html5lib==1.1 pydantic==2.9.2
+
+      - name: Apply schema (drop-and-recreate, wipes data!)
+        if: inputs.job == 'schema'
+        run: python -m seed.apply_schema
+
+      - name: Seed sample data
+        if: inputs.job == 'seed'
+        run: python -m seed.seed_azure_sql
+
+      - name: Historical backfill (10 leagues x 5 seasons, ~50 min)
+        if: inputs.job == 'backfill'
+        run: python -m pipeline.backfill_history
+
+      - name: Daily pipeline run
+        if: inputs.job == 'daily' || github.event_name == 'schedule'
+        run: python -m pipeline.run_pipeline
+
+      - name: Health check
+        if: inputs.job == 'health'
+        run: python -m pipeline.health_check

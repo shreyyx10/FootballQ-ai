@@ -1,0 +1,32 @@
+[
+  {
+    "league_name": "Championship",
+    "fbref_comp_id": "10",
+    "fbref_slug": "Championship",
+    "season": null
+  },
+  {
+    "league_name": "Eredivisie",
+    "fbref_comp_id": "23",
+    "fbref_slug": "Eredivisie",
+    "season": null
+  },
+  {
+    "league_name": "Primeira Liga",
+    "fbref_comp_id": "32",
+    "fbref_slug": "Primeira-Liga",
+    "season": null
+  },
+  {
+    "league_name": "Brazilian Serie A",
+    "fbref_comp_id": "24",
+    "fbref_slug": "Serie-A",
+    "season": "2026"
+  },
+  {
+    "league_name": "Liga Profesional Argentina",
+    "fbref_comp_id": "21",
+    "fbref_slug": "Primera-Division",
+    "season": "2026"
+  }
+]

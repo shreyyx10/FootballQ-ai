@@ -1,0 +1,39 @@
+# Node / Next.js
+node_modules/
+frontend/.next/
+frontend/out/
+frontend/.vercel/
+frontend/next-env.d.ts
+*.tsbuildinfo
+
+# Python / Azure Functions
+api/.venv/
+api/.venv-pg/
+api/venv/
+__pycache__/
+*.pyc
+.python_packages/
+api/.python_packages/
+local.settings.json
+.pytest_cache/
+*.egg-info/
+
+# Environment files (never commit real secrets)
+.env
+.env.local
+.env.*.local
+*.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Azure Functions build artifacts
+api/bin/
+api/obj/

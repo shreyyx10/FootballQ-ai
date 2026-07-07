@@ -1,0 +1,71 @@
+name: Security & Dependency Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  python-dependency-audit:
+    name: Python dependency audit (pip-audit)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pip-audit
+
+      - name: Run pip-audit (non-blocking)
+        run: pip-audit -r requirements.txt || echo "pip-audit reported findings - review manually"
+
+  npm-audit:
+    name: NPM dependency audit
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run npm audit (non-blocking)
+        run: npm audit --audit-level=high || echo "npm audit reported findings - review manually"
+
+  secret-scan:
+    name: Basic secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan for likely committed secrets
+        run: |
+          set -e
+          echo "Scanning for suspicious patterns (API keys, connection strings)..."
+          if grep -RIn --exclude-dir=node_modules --exclude-dir=.git \
+              -E "(Server=tcp:.*Password=[^;<]+;|sk-[A-Za-z0-9]{20,}|AZURE_SQL_CONNECTION_STRING=.+;.*Password=)" . ; then
+            echo "Potential secret found in repository!"
+            exit 1
+          else
+            echo "No obvious secrets detected."
+          fi

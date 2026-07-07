@@ -1,0 +1,50 @@
+[
+  {
+    "team_name": "Barcelona",
+    "tactical_style": "Possession-dominant positional play built around quick combination passing, high defensive line and aggressive counter-pressing immediately after losing the ball. Midfield is the engine of the team, with central midfielders expected to receive under pressure, turn, and progress play through tight spaces.",
+    "formation": "4-3-3",
+    "pressing_intensity": "High",
+    "possession_style": "Possession-heavy, short combinations",
+    "player_requirements": "Technically gifted central midfielders with elite press resistance and progressive passing; inverted wingers comfortable cutting inside to combine and shoot; full-backs who can both overlap and invert into midfield; a striker capable of dropping into pockets to link play. Defenders must be comfortable receiving the ball under pressure in their own third."
+  },
+  {
+    "team_name": "Manchester City",
+    "tactical_style": "Highly structured positional possession football with constant rotations, overloads in wide areas and a single deep-lying pivot controlling tempo. Full-backs frequently invert into midfield to create numerical superiority centrally.",
+    "formation": "4-3-3 (fluid 3-2-4-1 in possession)",
+    "pressing_intensity": "High",
+    "possession_style": "Possession-heavy with positional rotations and overloads",
+    "player_requirements": "An elite controlling defensive midfielder to dictate tempo; versatile attacking midfielders comfortable in multiple advanced positions; full-backs capable of inverting; a central striker who occupies defenders to create space for late-arriving midfielders. Tactical intelligence and positional discipline are prioritised over raw athleticism."
+  },
+  {
+    "team_name": "Arsenal",
+    "tactical_style": "High-press, possession-based football with structured build-up patterns, inverted full-backs and wide forwards who combine goal threat with heavy pressing duties. Set-piece routines are a significant source of chance creation.",
+    "formation": "4-3-3",
+    "pressing_intensity": "High",
+    "possession_style": "Possession-heavy with structured build-up and overloads on the ball-near side",
+    "player_requirements": "Two-way wide forwards who can score and press relentlessly; a ball-winning, progressive central midfield trio; centre-backs comfortable building play under pressure with recovery pace for a high line; full-backs who can invert into midfield. Set-piece specialists add additional value."
+  },
+  {
+    "team_name": "Real Madrid",
+    "tactical_style": "Balanced approach combining patient possession in build-up with rapid vertical transitions exploiting individual quality in wide areas. Midfield favours athletic, two-way players who can both progress the ball and recover defensively at pace.",
+    "formation": "4-3-3",
+    "pressing_intensity": "Medium-High",
+    "possession_style": "Mixed - controlled possession with quick vertical transitions",
+    "player_requirements": "Explosive wide forwards capable of beating defenders 1v1 and finishing in transition; a dynamic, goal-scoring central midfielder; a deep-lying playmaker or athletic ball-winner to balance the midfield; centre-backs with recovery pace and composure on the ball; full-backs who provide width and crossing or progressive passing from deep."
+  },
+  {
+    "team_name": "Liverpool",
+    "tactical_style": "High-intensity pressing with rapid transitions from defence to attack, full-backs providing width and creative output, and a midfield built for ball-winning and quick progression into the front three.",
+    "formation": "4-3-3",
+    "pressing_intensity": "Very High",
+    "possession_style": "Balanced - controlled possession with explosive transitions",
+    "player_requirements": "High-pressing forwards comfortable both creating and scoring; attacking full-backs with elite passing range; a midfield combining defensive ball-winners with at least one progressive passer; centre-backs comfortable defending in large spaces behind a high line and distributing under pressure."
+  },
+  {
+    "team_name": "Bayern Munich",
+    "tactical_style": "Dominant possession football with extremely high pressing intensity, width provided by inverted wingers and overlapping full-backs, and a central striker who is the focal point of chance creation inside the box.",
+    "formation": "4-2-3-1",
+    "pressing_intensity": "Very High",
+    "possession_style": "Possession-heavy with high pressing triggers",
+    "player_requirements": "An elite penalty-box striker who finishes high-quality chances; creative attacking midfielders comfortable between the lines; full-backs with strong recovery pace given the high defensive line; central midfield pairing combining tempo control with defensive cover; wingers who combine dribbling with pressing intensity."
+  }
+]

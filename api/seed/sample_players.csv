@@ -1,0 +1,34 @@
+player_id,player_name,age,nationality,club,league,position,minutes,goals,assists,xg,xag,shots_per90,key_passes_per90,progressive_passes_per90,progressive_carries_per90,successful_takeons_per90,shot_creating_actions_per90,tackles_per90,interceptions_per90,pressures_per90,pass_completion_pct,market_value_million,preferred_foot
+p001,Lamine Yamal,18,Spain,Barcelona,La Liga,Winger,2450,9,12,7.8,9.6,3.1,2.6,5.4,5.8,3.4,4.9,1.0,0.6,16.5,84.2,180.0,Left
+p002,Bukayo Saka,22,England,Arsenal,Premier League,Winger,2680,11,10,8.9,8.1,3.4,2.4,4.6,5.1,3.0,4.6,1.2,0.7,17.8,83.5,140.0,Left
+p003,Vinicius Junior,24,Brazil,Real Madrid,La Liga,Winger,2590,15,11,12.1,8.4,3.7,2.1,3.8,6.7,4.1,4.4,0.8,0.5,14.2,82.1,170.0,Right
+p004,Rodrygo,23,Brazil,Real Madrid,La Liga,Winger,2210,10,8,8.6,6.9,3.0,2.0,3.5,5.2,3.2,3.9,0.9,0.6,15.0,84.6,90.0,Right
+p005,Rafael Leao,25,Portugal,AC Milan,Serie A,Winger,2340,9,7,7.4,6.0,2.8,1.8,3.1,6.1,3.8,3.7,0.7,0.5,12.6,80.4,80.0,Left
+p006,Khvicha Kvaratskhelia,23,Georgia,Paris Saint-Germain,Ligue 1,Winger,2180,10,9,8.2,7.5,3.0,2.5,3.9,6.3,4.3,4.5,1.0,0.6,13.9,81.7,90.0,Left
+p007,Michael Olise,23,France,Bayern Munich,Bundesliga,Winger,2050,8,9,6.9,7.2,2.6,2.9,4.2,5.0,3.6,4.3,0.9,0.5,12.1,82.9,75.0,Right
+p008,Erling Haaland,24,Norway,Manchester City,Premier League,Striker,2520,28,5,24.6,4.2,4.8,1.1,1.2,1.4,0.9,2.1,0.4,0.3,9.8,76.3,180.0,Left
+p009,Lautaro Martinez,27,Argentina,Inter Milan,Serie A,Striker,2480,21,6,18.4,4.6,3.9,1.3,1.5,1.6,1.1,2.4,0.5,0.4,11.2,78.1,100.0,Right
+p010,Victor Osimhen,26,Nigeria,Napoli,Serie A,Striker,2150,19,4,16.8,3.1,4.1,0.9,1.0,1.3,0.8,1.9,0.4,0.3,10.5,75.8,90.0,Right
+p011,Kylian Mbappe,26,France,Real Madrid,La Liga,Striker,2600,27,7,21.9,6.0,4.5,2.0,2.4,4.0,2.6,3.6,0.5,0.4,12.0,80.0,180.0,Right
+p012,Harry Kane,31,England,Bayern Munich,Bundesliga,Striker,2610,24,9,20.5,7.4,3.7,2.7,3.3,1.9,1.0,2.9,0.6,0.5,10.9,82.6,75.0,Right
+p013,Robert Lewandowski,36,Poland,Barcelona,La Liga,Striker,2280,22,5,18.0,3.9,4.0,1.5,1.4,1.1,0.7,2.0,0.4,0.3,9.6,79.4,15.0,Right
+p014,Jamal Musiala,22,Germany,Bayern Munich,Bundesliga,Attacking Midfielder,2300,12,10,10.2,8.8,3.2,2.8,4.9,6.5,4.2,5.3,0.9,0.6,14.7,86.1,130.0,Right
+p015,Florian Wirtz,22,Germany,Liverpool,Premier League,Attacking Midfielder,2240,11,13,9.5,11.2,2.9,3.6,5.6,5.9,3.6,5.8,1.0,0.7,15.3,85.0,140.0,Right
+p016,Phil Foden,24,England,Manchester City,Premier League,Attacking Midfielder,2400,13,9,10.8,8.0,3.1,2.7,4.8,4.8,3.0,4.7,0.8,0.6,13.8,87.3,110.0,Left
+p017,Martin Odegaard,26,Norway,Arsenal,Premier League,Attacking Midfielder,2500,8,11,7.1,9.4,2.4,3.4,6.2,3.9,2.0,5.0,1.1,0.8,13.0,89.5,90.0,Left
+p018,Pedri,22,Spain,Barcelona,La Liga,Central Midfielder,2380,5,9,4.6,7.8,1.6,2.6,7.8,4.7,2.6,3.6,1.4,1.0,17.2,91.4,100.0,Right
+p019,Jude Bellingham,21,England,Real Madrid,La Liga,Central Midfielder,2450,14,8,11.3,7.0,2.7,2.2,6.4,4.6,2.2,4.1,1.5,1.1,16.4,87.9,180.0,Right
+p020,Gavi,21,Spain,Barcelona,La Liga,Central Midfielder,2050,4,6,3.8,5.4,1.4,2.3,7.1,4.3,3.0,3.1,1.8,1.3,18.5,90.2,90.0,Right
+p021,Eduardo Camavinga,22,France,Real Madrid,La Liga,Central Midfielder,2120,3,5,2.9,4.2,1.1,1.8,6.8,4.9,2.4,2.8,2.0,1.4,17.9,89.7,90.0,Left
+p022,Declan Rice,26,England,Arsenal,Premier League,Defensive Midfielder,2680,5,6,4.4,5.0,1.3,1.9,6.9,3.8,1.6,2.6,2.4,1.7,18.4,90.8,110.0,Right
+p023,Rodri,28,Spain,Manchester City,Premier League,Defensive Midfielder,2550,7,8,5.8,5.9,1.6,2.4,8.9,3.2,1.2,2.9,2.1,1.6,16.7,92.3,110.0,Right
+p024,Aurelien Tchouameni,25,France,Real Madrid,La Liga,Defensive Midfielder,2300,2,3,2.0,2.6,0.9,1.2,7.4,2.6,0.8,1.6,2.6,1.9,19.1,91.0,80.0,Right
+p025,Joshua Kimmich,30,Germany,Bayern Munich,Bundesliga,Defensive Midfielder,2400,3,9,2.6,7.1,1.0,3.1,9.6,3.0,1.4,2.7,2.2,1.5,17.5,91.8,55.0,Right
+p026,Trent Alexander-Arnold,27,England,Real Madrid,La Liga,Full-back,2300,4,11,3.5,8.6,1.4,3.4,8.2,3.6,1.7,3.4,1.9,1.4,15.8,88.0,60.0,Right
+p027,Alphonso Davies,24,Canada,Bayern Munich,Bundesliga,Full-back,2150,3,6,2.6,4.8,1.1,1.7,5.4,5.6,3.1,2.6,2.2,1.5,14.9,85.3,55.0,Left
+p028,Theo Hernandez,27,France,AC Milan,Serie A,Full-back,2480,5,7,3.9,5.1,1.6,1.9,4.9,5.2,2.4,2.9,2.0,1.3,13.6,83.7,55.0,Left
+p029,Achraf Hakimi,26,Morocco,Paris Saint-Germain,Ligue 1,Full-back,2520,6,9,4.7,6.0,1.7,2.0,5.1,5.9,2.9,3.2,2.3,1.6,14.4,84.2,70.0,Right
+p030,William Saliba,24,France,Arsenal,Premier League,Centre-back,2660,2,1,1.6,0.8,0.4,0.4,5.9,1.6,0.4,0.5,1.4,1.5,9.3,91.6,80.0,Right
+p031,Virgil van Dijk,34,Netherlands,Liverpool,Premier League,Centre-back,2520,3,1,2.0,0.6,0.5,0.3,6.2,1.1,0.2,0.4,1.2,1.6,8.7,92.4,25.0,Right
+p032,Antonio Rudiger,32,Germany,Real Madrid,La Liga,Centre-back,2280,2,1,1.8,0.5,0.6,0.3,5.6,1.0,0.3,0.4,1.6,1.8,10.1,90.5,30.0,Right
+p033,Dayot Upamecano,26,France,Bayern Munich,Bundesliga,Centre-back,2400,2,2,1.5,0.9,0.4,0.4,6.4,1.2,0.3,0.5,1.5,1.7,10.8,91.2,55.0,Right

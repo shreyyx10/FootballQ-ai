@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend-tests:
+    name: Backend (Azure Functions API) - pytest
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run pytest
+        env:
+          USE_MOCK_LLM: "true"
+          ENABLE_REAL_LLM: "false"
+          ENABLE_QDRANT: "false"
+          ALLOWED_ORIGINS: "https://footballq-ai.vercel.app"
+          AZURE_SQL_CONNECTION_STRING: ""
+        run: pytest -v
+
+  frontend-build:
+    name: Frontend (Next.js) - lint & build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Build
+        env:
+          NEXT_PUBLIC_APP_NAME: "FootballQ AI"
+          NEXT_PUBLIC_API_BASE_URL: "https://example-placeholder.azurewebsites.net/api"
+          NEXT_PUBLIC_ENVIRONMENT: "production"
+        run: npm run build
